@@ -95,3 +95,54 @@
   text-decoration: none;
   color: white;
 }
+
+#forecast {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.fc {
+  margin: 0 1em;
+}
+
+.heads th {
+  padding: calc(0.5em / 0.7);
+  width: calc(4em / 0.7);
+  text-align: center;
+  font-size: calc((10px + 2vmin) * 0.7) !important;
+}
+
+.dataRow td {
+  padding: calc(0.5em / 0.7);
+  width: calc(4em / 0.7);
+  text-align: center;
+}
+
+.rh {
+  width: calc(6.5em / 0.7) !important;
+}
+
+.icontemp {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-scrollpanel-content {
+  font-size: calc((10px + 2vmin) * 0.7) !important;
+}
+
+#linkback {
+  text-align: center;
+  width: 100%;
+  font-size: calc((10px + 2vmin) * 0.5);
+  position: absolute;
+  bottom: 0.2em;
+}
+
+#linkback a {
+  text-decoration: none;
+  color: white;
+}
