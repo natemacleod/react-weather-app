@@ -33,6 +33,11 @@
   display: flex;
 }
 
+#e404 {
+  text-align: center;
+  margin-top: 10%;
+}
+
 #bigtext {
   width: 60%;
 }

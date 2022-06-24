@@ -9,6 +9,9 @@ import PrimeReact from 'primereact/api';
 import { InputText } from 'primereact/inputtext'
 import { Menubar } from 'primereact/menubar';
 import { ScrollPanel } from 'primereact/scrollpanel';
+import { Button } from 'primereact/button';
+import { Messages } from 'primereact/messages';
+import { Message } from 'primereact/message';
 
 PrimeReact.ripple = true;
 
@@ -36,7 +39,7 @@ const getWeatherIcon = i => {
 const formatDate = (d, timeFormat) => {
   d = new Date(d);
   switch (timeFormat) {
-    case 'NONE': 
+    case 'NONE':
       return d.toLocaleString("en-US", {
         weekday: "short",
         month: "short",
@@ -109,17 +112,17 @@ const Forecast = (props) => {
     <div className='fc'>
       <table className='heads'>
         <thead>
-        <tr>
-          <th className='rh'></th>
-          <th>Feels Like</th>
-          <th>Humidity</th>
-          <th>POP</th>
-          <th>Wind Speed</th>
-          <th>UV Index</th>
-        </tr>
+          <tr>
+            <th className='rh'></th>
+            <th>Feels Like</th>
+            <th>Humidity</th>
+            <th>POP</th>
+            <th>Wind Speed</th>
+            <th>UV Index</th>
+          </tr>
         </thead>
       </table>
-      <ScrollPanel style={{width: '100%', height: '400px'}}>
+      <ScrollPanel style={{ width: '100%', height: '400px' }}>
         <table className='fctable'>
           <tbody>{rows}</tbody>
         </table>
@@ -150,6 +153,7 @@ const AlertView = (props) => {
 }
 
 const LocationData = (props) => {
+  const [resp, setResp] = useState(200);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   useEffect(() => {
@@ -159,15 +163,21 @@ const LocationData = (props) => {
         method: 'GET'
       }
     ).then((resp) => {
-      resp.json().then((j) => {
-        setData(j);
-        console.log(j);
+      if (!resp.ok) {
+        setResp(resp.status);
         setLoading(false);
-      })
+      } else {
+        setResp(200);
+        resp.json().then((j) => {
+          setData(j);
+          console.log(j);
+          setLoading(false);
+        });
+      }
     });
   }, [props.location]);
 
-  if (!loading) return (
+  if (!loading && resp === 200) return (
     <div id='locData'>
       <div id="basics">
         <div id="bigtext">
@@ -231,16 +241,32 @@ const LocationData = (props) => {
         <Forecast data={getNextXHours(data['days'], 72)} timeFormat={'HOUR'} />
         <Forecast data={data['days']} timeFormat={'NONE'} />
       </div>
-      <div id='linkback'>
-        <p><a href="https://www.visualcrossing.com/">Weather Data Provided by Visual Crossing</a></p>
-      </div>
     </div>
   );
-  else return (<div id='basics'>Loading</div>);
+  else if (loading) return (<div id='basics'><h3>Loading</h3></div>);
+  else return (
+    <div id='e404'>
+      <h3>Error <strong>{resp}</strong></h3>
+      {resp === 404 && <p>
+        Data for "{props.location}" not found. 
+        Check for spelling errors and try again. <br /> 
+        If you're sure the spelling is correct, 
+        the location might not have any data associated with it.
+      </p>}
+      {resp === 429 && <p>
+        Too many requests have been made to the API today. <br />
+        I do not make money off this project; as such, I am using a free API. <br /> 
+        This API is limited at 1000 calls per day -- this limit has been reached. <br />
+        Try again tomorrow!
+      </p>}
+    </div>
+  );
 }
 
 const App = (props) => {
+  //const msg = useRef(null)
   const [active, setActive] = useState('Kitchener');
+  const [bar, setBar] = useState("");
   const [menuItems, setMenuItems] = useState([{
     label: 'Kitchener',
     command: () => setActive('Kitchener'),
@@ -259,6 +285,22 @@ const App = (props) => {
     }]
   }]);
 
+  const addLocation = () => {
+    let items = menuItems;
+    items.push({
+      label: bar,
+      command: () => setActive(bar),
+      items: [{
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => console.log("Delete")
+      }]
+    });
+    setMenuItems(items);
+    setActive(bar);
+    setBar("");
+  }
+
   return (
     <div className="App">
       <Menubar
@@ -267,17 +309,26 @@ const App = (props) => {
             label: 'My Locations',
             icon: 'pi pi-globe',
             items: menuItems,
+          },
+          {
+            label: 'Return Home',
+            icon: 'pi pi-chevron-left',
+            url: 'https://natemacleod.github.io'
           }
         ]}
         start={<img src={logo} height='50px' />}
         end={
-          <span className="p-input-icon-right">
-            <i className="pi pi-search" />
-            <InputText placeholder='Add a Location' />
-          </span>
+          <div id="addLocation">
+            <InputText placeholder='Add a Location' value={bar} onChange={e => setBar(e.target.value)} />
+            <Button icon="pi pi-plus" onClick={() => { addLocation() }} />
+          </div>
         }
       />
       <LocationData location={active} />
+
+      <div id='linkback'>
+        <p><a href="https://www.visualcrossing.com/">Weather Data Provided by Visual Crossing</a></p>
+      </div>
     </div>
   );
 }
