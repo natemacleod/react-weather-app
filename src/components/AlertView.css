@@ -1,0 +1,24 @@
+#alertView {
+    width: 90%;
+    margin: 0 auto 6vh auto;
+    padding: 15px;
+    background-color: #a81717aa;
+    border-radius: 10px;
+}
+
+.alert {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.alert i {
+    margin-right: 15px;
+    font-size: 1.5em;
+}
+
+.alertText a {
+    text-transform: capitalize;
+    margin-right: 1em;
+    text-decoration: none;
+    color: white;
+}

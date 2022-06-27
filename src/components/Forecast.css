@@ -1,0 +1,43 @@
+#forecast {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.fcInner {
+    margin-bottom: 1em;
+}
+
+.fchead {
+    margin: 0 1.25em;
+}
+
+.fc {
+    margin: 0 1em;
+    font-size: calc((10px + 2vmin) * 0.7) !important;
+}
+
+.heads th {
+    padding: calc(0.5em / 0.7);
+    width: calc(4em / 0.7);
+    text-align: center;
+    font-size: calc((10px + 2vmin) * 0.7) !important;
+}
+
+.dataRow td {
+    font-size: calc((10px + 2vmin) * 0.7) !important;
+    padding: calc(0.5em / 0.7);
+    width: calc(4em / 0.7);
+    text-align: center;
+}
+
+.rh {
+    width: calc(6.5em / 0.7) !important;
+}
+
+.icontemp {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}

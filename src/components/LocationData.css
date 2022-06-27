@@ -1,0 +1,52 @@
+.p-scrollpanel-content {
+    font-size: calc(10px + 2vmin) !important;
+}
+
+#basics {
+    width: 90vw;
+    margin: 3vh auto 6vh auto;
+    display: flex;
+}
+
+#e404 {
+    text-align: center;
+    margin-top: 10%;
+}
+
+#bigtext {
+    width: 60%;
+}
+
+#topline {
+    display: flex;
+    align-items: center;
+}
+
+.wi {
+    font-size: 2em;
+    margin: 0 20px 0 10px;
+}
+
+#basicstats {
+    width: 40%;
+    max-width: 555px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.stat {
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 10px;
+    width: 165px;
+}
+
+.stat i {
+    margin: 10px;
+}
+
+.statInner {
+    display: flex;
+    flex-flow: column nowrap;
+}
