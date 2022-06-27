@@ -153,12 +153,95 @@ const AlertView = (props) => {
 }
 
 const LocationData = (props) => {
+  if (!props.loading) return (
+    <div id='locData'>
+      <div id="basics">
+        <div id="bigtext">
+          <div id="topline">
+            <h2 className='ib'>{props.data['address']} //&nbsp;</h2>
+            {getWeatherIcon(props.data['currentConditions']['icon'])}
+            <h1 className="ib">{Math.round(props.data['currentConditions']['temp'])}°&nbsp;</h1>
+          </div>
+          <h4>{props.data['resolvedAddress']}</h4>
+          <p>{props.data['description']}</p>
+        </div>
+        <div id="basicstats">
+          <div className="stat">
+            <i className='bi bi-chevron-up' />
+            <div className="statInner">
+              <h6>HIGH</h6>
+              <p>{Math.round(props.data['days'][0]['tempmax'])}° / <em>{(Math.round(props.data['days'][0]['feelslikemax']))}°</em></p>
+            </div>
+          </div>
+          <div className="stat">
+            <i className='bi bi-chevron-down' />
+            <div className="statInner">
+              <h6>LOW</h6>
+              <p>{Math.round(props.data['days'][0]['tempmin'])}° / <em>{(Math.round(props.data['days'][0]['feelslikemin']))}°</em></p>
+            </div>
+          </div>
+          <div className="stat">
+            <i className='bi bi-thermometer-half' />
+            <div className="statInner">
+              <h6>FEELS LIKE</h6>
+              <p><em>{(Math.round(props.data['currentConditions']['feelslike']))}°</em></p>
+            </div>
+          </div>
+          <div className="stat">
+            <i className='bi bi-droplet' />
+            <div className="statInner">
+              <h6>HUMIDITY</h6>
+              <p>{Math.round(props.data['currentConditions']['humidity'])}%</p>
+            </div>
+          </div>
+          <div className="stat">
+            <i className="bi bi-cloud-rain"></i>
+            <div className="statInner">
+              <h6>POP</h6>
+              <p>{Math.round(props.data['currentConditions']['precipprob'])}%</p>
+            </div>
+          </div>
+          <div className="stat">
+            <i className='bi bi-brightness-high' />
+            <div className="statInner">
+              <h6>UV INDEX</h6>
+              <p>{props.data['currentConditions']['uvindex']}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {props.data['alerts'].length > 0 &&
+        <AlertView alerts={props.data['alerts']} />
+      }
+      <div id="forecast">
+        <Forecast data={getNextXHours(props.data['days'], 72)} timeFormat={'HOUR'} />
+        <Forecast data={props.data['days']} timeFormat={'NONE'} />
+      </div>
+    </div>
+  );
+  else return (<div id="basics"><h3>Loading...</h3></div>);
+}
+
+const App = (props) => {
+  //const msg = useRef(null)
+  const [active, setActive] = useState(null);
+  const [bar, setBar] = useState("");
+  const [menuItems, setMenuItems] = useState([]);
+
   const [resp, setResp] = useState(200);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   useEffect(() => {
-    fetch(
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${props.location}?unitGroup=metric&key=9MKRB6JF2FRHFZ7UU8G8GRFY2&contentType=json&iconSet=icons2`,
+    if (active in data) {
+      setResp(200);
+      setLoading(false);
+      return;
+    } else if (active == null) {
+      setResp(1);
+      setLoading(false);
+      return;
+    } else fetch(
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${active}?unitGroup=metric&key=9MKRB6JF2FRHFZ7UU8G8GRFY2&contentType=json&iconSet=icons2`,
       {
         method: 'GET'
       }
@@ -169,136 +252,54 @@ const LocationData = (props) => {
       } else {
         setResp(200);
         resp.json().then((j) => {
-          setData(j);
+          let d = data;
+          d[active] = j;
+          setData(d);
           console.log(j);
           setLoading(false);
         });
       }
     });
-  }, [props.location]);
+  }, [active]);
 
-  if (!loading && resp === 200) return (
-    <div id='locData'>
-      <div id="basics">
-        <div id="bigtext">
-          <div id="topline">
-            <h2 className='ib'>{data['address']} //&nbsp;</h2>
-            {getWeatherIcon(data['currentConditions']['icon'])}
-            <h1 className="ib">{Math.round(data['currentConditions']['temp'])}°&nbsp;</h1>
-          </div>
-          <h4>{data['resolvedAddress']}</h4>
-          <p>{data['description']}</p>
-        </div>
-        <div id="basicstats">
-          <div className="stat">
-            <i className='bi bi-chevron-up' />
-            <div className="statInner">
-              <h6>HIGH</h6>
-              <p>{Math.round(data['days'][0]['tempmax'])}° / <em>{(Math.round(data['days'][0]['feelslikemax']))}°</em></p>
-            </div>
-          </div>
-          <div className="stat">
-            <i className='bi bi-chevron-down' />
-            <div className="statInner">
-              <h6>LOW</h6>
-              <p>{Math.round(data['days'][0]['tempmin'])}° / <em>{(Math.round(data['days'][0]['feelslikemin']))}°</em></p>
-            </div>
-          </div>
-          <div className="stat">
-            <i className='bi bi-thermometer-half' />
-            <div className="statInner">
-              <h6>FEELS LIKE</h6>
-              <p><em>{(Math.round(data['currentConditions']['feelslike']))}°</em></p>
-            </div>
-          </div>
-          <div className="stat">
-            <i className='bi bi-droplet' />
-            <div className="statInner">
-              <h6>HUMIDITY</h6>
-              <p>{Math.round(data['currentConditions']['humidity'])}%</p>
-            </div>
-          </div>
-          <div className="stat">
-            <i className="bi bi-cloud-rain"></i>
-            <div className="statInner">
-              <h6>POP</h6>
-              <p>{Math.round(data['currentConditions']['precipprob'])}%</p>
-            </div>
-          </div>
-          <div className="stat">
-            <i className='bi bi-brightness-high' />
-            <div className="statInner">
-              <h6>UV INDEX</h6>
-              <p>{data['currentConditions']['uvindex']}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      {data['alerts'].length > 0 &&
-        <AlertView alerts={data['alerts']} />
-      }
-      <div id="forecast">
-        <Forecast data={getNextXHours(data['days'], 72)} timeFormat={'HOUR'} />
-        <Forecast data={data['days']} timeFormat={'NONE'} />
-      </div>
-    </div>
-  );
-  else if (loading) return (<div id='basics'><h3>Loading</h3></div>);
-  else return (
-    <div id='e404'>
-      <h3>Error <strong>{resp}</strong></h3>
-      {resp === 404 && <p>
-        Data for "{props.location}" not found. 
-        Check for spelling errors and try again. <br /> 
-        If you're sure the spelling is correct, 
-        the location might not have any data associated with it.
-      </p>}
-      {resp === 429 && <p>
-        Too many requests have been made to the API today. <br />
-        I do not make money off this project; as such, I am using a free API. <br /> 
-        This API is limited at 1000 calls per day -- this limit has been reached. <br />
-        Try again tomorrow!
-      </p>}
-    </div>
-  );
-}
+  useEffect(() => {
+    console.log(menuItems);
+  }, [menuItems]);
 
-const App = (props) => {
-  //const msg = useRef(null)
-  const [active, setActive] = useState('Kitchener');
-  const [bar, setBar] = useState("");
-  const [menuItems, setMenuItems] = useState([{
-    label: 'Kitchener',
-    command: () => setActive('Kitchener'),
-    items: [{
-      label: 'Delete',
-      icon: 'pi pi-trash',
-      command: () => console.log("Delete")
-    }]
-  }, {
-    label: 'Victoria',
-    command: () => setActive('Victoria'),
-    items: [{
-      label: 'Delete',
-      icon: 'pi pi-trash',
-      command: () => console.log("Delete")
-    }]
-  }]);
+  const removeLocation = loc => {
+    let items = menuItems;
+    items = items.filter(l => l['label'] !== loc);
+    setMenuItems(items);
+    if (active === loc) {
+      setLoading(true);
+      if (items.length > 0) setActive(items[0]['label']);
+      else setActive(null);
+    }
+
+    let d = data;
+    delete d[loc];
+    setData(d);
+  }
 
   const addLocation = () => {
     let items = menuItems;
     items.push({
       label: bar,
-      command: () => setActive(bar),
+      command: () => setActiveLocation(bar),
       items: [{
         label: 'Delete',
         icon: 'pi pi-trash',
-        command: () => console.log("Delete")
+        command: () => removeLocation(bar)
       }]
     });
     setMenuItems(items);
-    setActive(bar);
+    setActiveLocation(bar);
     setBar("");
+  }
+
+  const setActiveLocation = loc => {
+    setLoading(true);
+    setActive(loc);
   }
 
   return (
@@ -324,8 +325,27 @@ const App = (props) => {
           </div>
         }
       />
-      <LocationData location={active} />
-
+      {resp === 200 && !loading && <LocationData data={data[active]} loading={loading} />}
+      {resp !== 200 &&
+        <div id='e404'>
+          <h3>Error <strong>{resp}</strong></h3>
+          {(resp === 404 || resp === 400) && <p>
+            Data for "{props.location}" not found.
+            Check for spelling errors and try again. <br />
+            If you're sure the spelling is correct,
+            the location might not have any data associated with it.
+          </p>}
+          {resp === 429 && <p>
+            Too many requests have been made to the weather API today. <br />
+            I do not make any money off this project; as such, I am using a free API to keep costs at zero. <br />
+            The API is limited at 1000 calls per day -- this limit has been reached. <br />
+            Try again tomorrow!
+          </p>}
+          {resp === 1 && <p>
+            You haven't added any locations. <br />
+            Add one using the bar in the top right.
+          </p>}
+        </div>}
       <div id='linkback'>
         <p><a href="https://www.visualcrossing.com/">Weather Data Provided by Visual Crossing</a></p>
       </div>
