@@ -24,10 +24,23 @@
 
 .p-menubar-start {
     height: 50px;
+    margin: 0 1em 0 0.5em;
 }
 
 .p-submenu-list {
     z-index: 65536 !important;
+}
+
+.p-inputtext {
+    border-radius: 0 !important;
+}
+
+.p-button {
+    border-radius: 0 !important;
+}
+
+.p-scrollpanel-bar {
+    background: white !important;
 }
 
 #linkback {
