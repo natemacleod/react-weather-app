@@ -1,15 +1,15 @@
 /*
     React Weather App (title WIP)
-    Version 1.0 (6/27/2022)
+    Version 1.0 (6/30/2022)
     Created by Nate MacLeod (natemacleod.github.io)
 */
 
 import './App.css';
-import logo from './logo.svg';
+import logo from './rwa512.png';
 import React, { useState, useEffect } from 'react';
 
 // PrimeReact imports
-import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/themes/lara-dark-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import PrimeReact from 'primereact/api';
@@ -22,7 +22,7 @@ PrimeReact.ripple = true;
 
 const App = (props) => {
     // State setup
-    const [active, setActive] = useState("~noLocations!!"); // Current location
+    const [active, setActive] = useState(null); // Current location
     const [bar, setBar] = useState(""); // Contents of 'Add Location' bar
     const [menuItems, setMenuItems] = useState([]); // List of locations for use in the Menubar component
     const [resp, setResp] = useState(200); // HTTP status code of the most recent API request
@@ -62,7 +62,7 @@ const App = (props) => {
         if (loc in data) {
             setResp(200);
             setLoading(false);
-        } else if (loc === "~noLocations!!") {
+        } else if (loc == null) {
             setResp(1);
             setLoading(false);
         } else fetch(
@@ -112,7 +112,6 @@ const App = (props) => {
                     </div>
                 }
             />
-            <p>{active}</p>
             {resp === 200 && <LocationData data={data[active]} loading={loading} />}
             {resp !== 200 &&
                 <div id='e404'>
