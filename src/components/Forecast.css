@@ -24,6 +24,10 @@
     font-size: calc((10px + 2vmin) * 0.7) !important;
 }
 
+.heads-words {
+    display: none;
+}
+
 .dataRow td {
     font-size: calc((10px + 2vmin) * 0.7) !important;
     padding: calc(0.5em / 0.7);
@@ -40,4 +44,14 @@
     flex-flow: row wrap;
     align-items: center;
     justify-content: center;
+}
+
+@media all and (min-width: 800px) {
+    .heads-words {
+        display: block !important;
+    }
+
+    .heads-icons {
+        display: none !important;
+    }
 }

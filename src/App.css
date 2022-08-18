@@ -23,8 +23,7 @@
 }
 
 .p-menubar-start {
-    height: 50px;
-    margin: 0 1em 0 0.5em;
+    display: none;
 }
 
 .p-submenu-list {
@@ -43,6 +42,10 @@
     background: white !important;
 }
 
+.p-inputtext {
+    width: 150px;
+}
+
 #linkback {
     text-align: center;
     width: 100%;
@@ -54,4 +57,15 @@
 #linkback a {
     text-decoration: none;
     color: white;
+}
+
+@media all and (min-width: 440px) {
+    .p-inputtext {
+        width: 250px;
+    }
+
+    .p-menubar-start {
+        margin: 0 1em 0 0.5em;
+        display: block;
+    }
 }

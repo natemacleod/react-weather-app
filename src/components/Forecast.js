@@ -30,7 +30,7 @@ const Forecast = (props) => {
 
     return (
         <div className='fc'>
-            <table className='heads'>
+            <table className='heads heads-words'>
                 <thead>
                     <tr>
                         <th className='rh'></th>
@@ -39,6 +39,18 @@ const Forecast = (props) => {
                         <th>POP</th>
                         <th>Wind Speed</th>
                         <th>UV Index</th>
+                    </tr>
+                </thead>
+            </table>
+            <table className='heads heads-icons'>
+                <thead>
+                    <tr>
+                        <th className='rh'></th>
+                        <th><i className='bi bi-thermometer-half' /></th>
+                        <th><i className='bi bi-droplet' /></th>
+                        <th><i className='bi bi-cloud-rain' /></th>
+                        <th><i className='bi bi-wind' /></th>
+                        <th><i className='bi bi-brightness-high' /></th>
                     </tr>
                 </thead>
             </table>

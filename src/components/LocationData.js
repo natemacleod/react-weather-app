@@ -31,7 +31,7 @@ const LocationData = (props) => {
                 <div id="basics">
                     <div id="bigtext">
                         <div id="topline">
-                            <h2 className='ib'>{props.data['address']} //&nbsp;</h2>
+                            <h2 className='ib'>{props.data['address']}</h2>
                             {getWeatherIcon(props.data['currentConditions']['icon'])}
                             <h1 className="ib">{Math.round(props.data['currentConditions']['temp'])}°&nbsp;</h1>
                         </div>

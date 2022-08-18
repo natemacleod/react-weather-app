@@ -6,15 +6,16 @@
     width: 90vw;
     margin: 3vh auto 6vh auto;
     display: flex;
+    flex-flow: column;
+}
+
+#bigtext {
+    margin: 3%;
 }
 
 #e404 {
     text-align: center;
     margin-top: 10%;
-}
-
-#bigtext {
-    width: 60%;
 }
 
 #topline {
@@ -24,12 +25,10 @@
 
 .wi {
     font-size: 2em;
-    margin: 0 20px 0 10px;
+    margin: 0 10px 0 10px;
 }
 
 #basicstats {
-    width: 40%;
-    max-width: 555px;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
@@ -38,8 +37,8 @@
 .stat {
     display: flex;
     flex-flow: row nowrap;
-    margin: 10px;
-    width: 165px;
+    margin: 10px 0;
+    width: 120px;
 }
 
 .stat i {
@@ -49,4 +48,24 @@
 .statInner {
     display: flex;
     flex-flow: column nowrap;
+}
+
+@media all and (min-width: 500px) {
+    #basics {
+        flex-flow: row;
+    }
+
+    #bigtext {
+        width: 60%;
+    }
+
+    #basicstats {
+        width: 40%;
+        max-width: 555px;
+    }
+
+    .stat {
+        width: 165px;
+        margin: 10px;
+    }
 }

@@ -37,7 +37,6 @@ const App = (props) => {
     // Adds a location (from the add location bar) to the selection menu and makes it active
     const addLocation = loc => {
         let items = menuItems;
-        console.log(active);
         items.push({
             label: loc,
             command: (e) => setActiveLocation(e.item.label)
@@ -81,7 +80,6 @@ const App = (props) => {
                     let d = data;
                     d[loc] = j;
                     setData(d);
-                    console.log(j);
                     setLoading(false);
                 });
             }
