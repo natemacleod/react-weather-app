@@ -102,7 +102,6 @@ const App = (props) => {
                         url: 'https://natemacleod.github.io'
                     }
                 ]}
-                start={<img src={logo} height='50px' />}
                 end={
                     <div id="addLocation">
                         <InputText placeholder='Add a Location' value={bar} onChange={e => setBar(e.target.value)} />
